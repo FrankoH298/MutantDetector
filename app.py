@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
         """INSERT INTO stats(count_mutant_dna, count_human_dna) VALUES (0, 0)""")
     app.state.db = database_connection
     yield
-    # Clean the connection
+    # Close the connection
     database_connection.close()
 
 app = FastAPI(lifespan=lifespan)

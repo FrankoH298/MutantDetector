@@ -5,61 +5,61 @@ def is_mutant(dna):
     for a in range(len(dna)):
         for b in range(len(dna[a])):
             for direction in range(1, 9):
-                if verificar_bordes(dna, a, b, direction):
+                if check_bounds(dna, a, b, direction):
                     return True
     return False
 
 
-def verificar_bordes(dna, a, b, dir):
+def check_bounds(dna, a, b, dir):
     match dir:
-        case 1:  # arriba
-            if a - 3 >= 0:  # verificamos que este dentro del rango de la matriz
+        case 1:  # UP
+            if a - 3 >= 0:  # check if within the matrix range
                 for c in range(1, 4):
                     if dna[a][b] != dna[a - c][b]:
                         return False
                 return True
-        case 2:  # abajo
-            if a + 3 < MAX_SIZE_DNA:  # verificamos que este dentro del rango de la matriz
+        case 2:  # DOWN
+            if a + 3 < MAX_SIZE_DNA:  # check if within the matrix range
                 for c in range(1, 4):
                     if dna[a][b] != dna[a + c][b]:
                         return False
                 return True
-        case 3:  # izquierda
-            if b - 3 >= 0:  # verificamos que este dentro del rango de la matriz
+        case 3:  # LEFT
+            if b - 3 >= 0:  # check if within the matrix range
                 for c in range(1, 4):
                     if dna[a][b] != dna[a][b - c]:
                         return False
                 return True
-        case 4:  # derecha
-            if b + 3 < MAX_SIZE_DNA:  # verificamos que este dentro del rango de la matriz
+        case 4:  # RIGHT
+            if b + 3 < MAX_SIZE_DNA:  # check if within the matrix range
                 for c in range(1, 4):
                     if dna[a][b] != dna[a][b + c]:
                         return False
                 return True
 
-        case 5:  # arriba izq
-            # verificamos que este dentro del rango de la matriz
+        case 5:  # UP LEFT
+            # check if within the matrix range
             if ((a - 3) >= 0 and (b - 3) >= 0):
                 for c in range(1, 4):
                     if dna[a][b] != dna[a - c][b - c]:
                         return False
                 return True
-        case 6:  # arriba der
-            # verificamos que este dentro del rango de la matriz
+        case 6:  # UP RIGHT
+            # check if within the matrix range
             if ((a - 3) >= 0 and (b + 3) < MAX_SIZE_DNA):
                 for c in range(1, 4):
                     if dna[a][b] != dna[a - c][b + c]:
                         return False
                 return True
-        case 7:  # abajo izq
-            # verificamos que este dentro del rango de la matriz
+        case 7:  # DOWN LEFT
+            # check if within the matrix range
             if ((a + 3) < MAX_SIZE_DNA and (b - 3) >= 0):
                 for c in range(1, 4):
                     if dna[a][b] != dna[a + c][b - c]:
                         return False
                 return True
-        case 8:  # abajo der
-            # verificamos que este dentro del rango de la matriz
+        case 8:  # DOWN RIGHT
+            # check if within the matrix range
             if ((a + 3) < MAX_SIZE_DNA and (b + 3) < MAX_SIZE_DNA):
                 for c in range(1, 4):
                     if dna[a][b] != dna[a + c][b + c]:
