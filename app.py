@@ -57,14 +57,14 @@ class Mutant(BaseModel):
 
 @app.get("/stats")
 async def get_stats():
+    await database.connect()
     query = "SELECT count_mutant_dna, count_human_dna FROM stats WHERE id = 1"
     stats = await database.fetch_one(query)
-
+    await database.disconnect()
     if stats['count_human_dna'] != 0:
         ratio = stats['count_mutant_dna'] / stats['count_human_dna']
     else:
         ratio = stats['count_mutant_dna']
-
     return {
         "count_mutant_dna": stats['count_mutant_dna'],
         "count_human_dna": stats['count_human_dna'],
@@ -74,6 +74,7 @@ async def get_stats():
 
 @app.post("/mutant", status_code=status.HTTP_200_OK)
 async def get_mutant(mutant: Mutant, response: Response):
+    await database.connect()
     dna = json.dumps(mutant.dna)
     query = "INSERT INTO dna(dna) VALUES (:dna)"
     await database.execute(query, values={"dna": dna})
@@ -81,8 +82,10 @@ async def get_mutant(mutant: Mutant, response: Response):
     if is_mutant(mutant.dna):
         query = "UPDATE stats SET count_mutant_dna = count_mutant_dna + 1 WHERE id = 1"
         await database.execute(query)
+        await database.disconnect()
         return True
     else:
         query = "UPDATE stats SET count_human_dna = count_human_dna + 1 WHERE id = 1"
         await database.execute(query)
         response.status_code = status.HTTP_403_FORBIDDEN
+        await database.disconnect()
